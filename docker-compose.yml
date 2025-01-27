@@ -1,0 +1,44 @@
+services:
+
+   php:
+     build:
+       context: ./docker/php
+     container_name: php_travel_order1
+     tty: true
+     volumes:
+       - ./:/var/www/html
+     networks:
+       - php_net
+
+   nginx:
+     image: nginx:stable-alpine
+     container_name: nginx_travel_order1
+     tty: true
+     ports:
+       - "80:80"
+       - "443:443"
+     volumes:
+       - ./:/var/www/html
+       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+     depends_on:
+       - db
+       - php
+     networks:
+       - php_net
+
+   db:
+     build: ./docker/mysql/.
+     container_name: mysql_travel_order1
+     environment:
+       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+       - MYSQL_DATABASE=painel
+       - MYSQL_USER=root
+     networks:
+       - php_net
+     ports:
+       - "3306:3306"
+     volumes:
+       - ./docker/mysql/files:/var/lib/mysql
+
+networks:
+  php_net:
