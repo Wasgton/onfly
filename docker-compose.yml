@@ -3,7 +3,10 @@ services:
    php:
      build:
        context: ./docker/php
-     container_name: php_travel_order1
+       args:
+         - uid=1000
+         - user=1000
+     container_name: php_travel_order
      tty: true
      volumes:
        - ./:/var/www/html
@@ -12,7 +15,7 @@ services:
 
    nginx:
      image: nginx:stable-alpine
-     container_name: nginx_travel_order1
+     container_name: nginx_travel_order
      tty: true
      ports:
        - "80:80"
@@ -28,10 +31,10 @@ services:
 
    db:
      build: ./docker/mysql/.
-     container_name: mysql_travel_order1
+     container_name: mysql_travel_order
      environment:
        - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-       - MYSQL_DATABASE=painel
+       - MYSQL_DATABASE=travel
        - MYSQL_USER=root
      networks:
        - php_net
