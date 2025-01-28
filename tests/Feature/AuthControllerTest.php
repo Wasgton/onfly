@@ -16,7 +16,7 @@ class AuthControllerTest extends TestCase
     /**
      * Test user registration feature
      */
-    public function test_user_can_register(): void
+    public function test_user_can_register() : void
     {        
         $userData = [
             'name' => $this->faker->name,
@@ -24,16 +24,16 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-       $this->postJson('/api/register', $userData)
-            ->assertStatus(201)
-            ->assertJsonStructure([
-                'message',
-                'user' => ['id', 'name', 'email']
-            ]);
+       $response = $this->postJson('/api/register', $userData);
+       $response->assertStatus(201);
+       $response->assertJsonStructure([
+           'message',
+           'user' => ['id', 'name', 'email']
+       ]);
         $this->assertDatabaseHas('users', ['email' => $userData['email']]);
     }
 
-    public function test_user_cant_register_with_invalid_data()
+    public function test_user_cant_register_with_invalid_data() : void
     {
         $userData = [
             'name' => $this->faker->name,
@@ -46,7 +46,7 @@ class AuthControllerTest extends TestCase
              ->assertJsonValidationErrors(['password', 'password_confirmation', 'email']);
     }
 
-    public function test_user_can_login()
+    public function test_user_can_login() : void
     {
         $userData = [
             'name' => $this->faker->name,
@@ -69,7 +69,7 @@ class AuthControllerTest extends TestCase
             ]);
     }
     
-    public function test_user_cant_login_with_wrong_data()
+    public function test_user_cant_login_with_wrong_data() : void
     {
         $userData = [
             'name' => $this->faker->name,
@@ -84,8 +84,8 @@ class AuthControllerTest extends TestCase
             'password' => $userData['password']
         ];
         $this->postJson('/api/login', $loginData)
-            ->assertStatus(Response::HTTP_UNAUTHORIZED)
-            ->assertJson(['error'=>'Unauthorized']);
+            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJsonValidationErrors(['email']);
     }
     
 }
