@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('destination');
             $table->date('departure_date');
             $table->date('return_date');
-            $table->enum('status', ['requested','approved','cancelled'])->default('requested');            
+            $table->enum('status', [1,2,3])->default(1);            
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
