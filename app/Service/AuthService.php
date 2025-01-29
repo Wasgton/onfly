@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Exceptions\FailToCreateException;
 use App\Models\User;
-use App\Repository\UserRepository;
+use App\Repository\Contracts\UserRepository;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;

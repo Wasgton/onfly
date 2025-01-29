@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\User;
+use App\Repository\Contracts\UserRepository;
 
 class UserRepositoryEloquent implements UserRepository
 {

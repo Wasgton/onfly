@@ -13,9 +13,6 @@ class AuthControllerTest extends TestCase
 
     use RefreshDatabase, WithFaker;
     
-    /**
-     * Test user registration feature
-     */
     public function test_user_can_register() : void
     {        
         $userData = [
@@ -24,7 +21,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-       $response = $this->postJson('/api/register', $userData);
+       $response = $this->postJson('/api/v1/register', $userData);
        $response->assertStatus(201);
        $response->assertJsonStructure([
            'message',
@@ -41,7 +38,7 @@ class AuthControllerTest extends TestCase
             'password' => 'passwo',
             'password_confirmation' => 'passw',
         ];
-        $this->postJson('/api/register', $userData)
+        $this->postJson('/api/v1/register', $userData)
              ->assertStatus(422)
              ->assertJsonValidationErrors(['password', 'password_confirmation', 'email']);
     }
@@ -54,13 +51,13 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-        $this->postJson('/api/register', $userData);
+        $this->postJson('/api/v1/register', $userData);
 
         $loginData = [
             'email' => $userData['email'],
             'password' => $userData['password']
         ];
-        $this->postJson('/api/login', $loginData)
+        $this->postJson('/api/v1/login', $loginData)
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'access_token',
@@ -77,13 +74,13 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-        $this->postJson('/api/register', $userData);
+        $this->postJson('/api/v1/register', $userData);
 
         $loginData = [
             'email' => $this->faker->email,
             'password' => $userData['password']
         ];
-        $this->postJson('/api/login', $loginData)
+        $this->postJson('/api/v1/login', $loginData)
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrors(['email']);
     }
