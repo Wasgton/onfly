@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\FailToCreateException;
 use App\Http\Requests\RequestStoreTravelOrder;
+use App\Http\Resources\TravelOrderShowResource;
 use App\Models\TravelOrder;
 use App\Service\TravelOrderService;
 use Illuminate\Http\JsonResponse;
@@ -31,9 +32,9 @@ class TravelOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TravelOrder $travelOrder)
+    public function show(TravelOrder $travelOrder) : TravelOrderShowResource
     {
-        //
+        return new TravelOrderShowResource($travelOrder);
     }
 
     /**

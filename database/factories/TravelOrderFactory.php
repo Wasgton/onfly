@@ -20,8 +20,8 @@ class TravelOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => null, 
-            'applicant_name' => $this->faker->name,
+            'user_id' => auth()->check()? auth()->user()->id : null, 
+            'applicant_name' => auth()->check()? auth()->user()->name : null,
             'destination' => $this->faker->city,
             'departure_date' => now()->addDays(5),
             'return_date' => now()->addDays(10)

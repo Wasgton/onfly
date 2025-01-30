@@ -2,8 +2,10 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
+use \Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,11 +18,5 @@ return Application::configure(basePath: dirname(__DIR__))
        $middleware->api();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (Exception $e, Request $request) {
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'error' => $e->getMessage()
-                ],$e->getCode()??'');
-            }
-        });
+
     })->create();
