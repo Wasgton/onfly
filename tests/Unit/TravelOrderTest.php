@@ -7,12 +7,12 @@ use App\Exceptions\FailToCreateException;
 use App\Models\TravelOrder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 use ValueError;
 
 class TravelOrderTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * @throws FailToCreateException
      */
@@ -20,10 +20,7 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
-            'departure_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
+        $travelOrder = TravelOrder::factory()->create([
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name
         ]);
@@ -34,10 +31,7 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
-            'departure_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
+        $travelOrder = TravelOrder::factory()->create([
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name
         ]);
@@ -52,10 +46,7 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
-            'departure_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
+        $travelOrder = TravelOrder::factory()->create([
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name
         ]);
@@ -75,10 +66,7 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
-            'departure_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
+        $travelOrder = TravelOrder::factory()->create([
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name,
         ]);
@@ -92,10 +80,8 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
+        $travelOrder = TravelOrder::factory()->create([
             'departure_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name,
         ]);
@@ -108,10 +94,8 @@ class TravelOrderTest extends TestCase
     {
         $user = $this->createUser()['user'];
         $this->actingAs($user);
-        $travelOrder = TravelOrder::create([
-            'destination' => $this->faker->city,
+        $travelOrder = TravelOrder::factory()->create([
             'departure_date' => Carbon::now()->addDays(1)->format('Y-m-d'),
-            'return_date' => Carbon::now()->addDays(10)->format('Y-m-d'),
             'user_id' => auth()->id(),
             'applicant_name' => auth()->user()->name,
         ]);

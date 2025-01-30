@@ -8,13 +8,13 @@ use App\States\CancelledState;
 use App\States\RequestedState;
 use App\States\TravelOrderState;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Validation\ValidationException;
 
 class TravelOrder extends Model
 {
-    use HasUlids;
+    use HasUlids, HasFactory;
 
     protected $fillable = [
             'user_id',
