@@ -11,5 +11,6 @@ Route::group(['prefix' => 'v1'], static function () {
     Route::middleware('auth:api')->group(function () {
         Route::post('/travel-orders', [TravelOrderController::class, 'store'])->name('api.v1.travel_orders.store');
         Route::get('/travel-orders/{travelOrder}', [TravelOrderController::class, 'show'])->name('api.v1.travel_orders.show');
+        Route::get('/travel-orders', [TravelOrderController::class, 'getTravelOrders'])->name('api.v1.travel_orders.get-all');
     });
 });

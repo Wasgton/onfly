@@ -24,5 +24,10 @@ class TravelOrderService
         return $travelOrder;
     }
 
+    public function getPaginated(array $filters)
+    {
+       $limit = isset($filters['per_page']) ? min($filters['per_page'], 100) : 15;
+       return $this->repository->getPaginated($filters, $limit);
+    }
     
 }
