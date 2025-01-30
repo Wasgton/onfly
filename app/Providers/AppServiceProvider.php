@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repository\Contracts\TravelOrderRepository;
+use App\Repository\TravelOrderRepositoryEloquent;
 use Illuminate\Support\ServiceProvider;
-use App\Repository\UserRepository;
+use App\Repository\Contracts\UserRepository;
 use App\Repository\UserRepositoryEloquent;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
+        $this->app->bind(TravelOrderRepository::class, TravelOrderRepositoryEloquent::class);
     }
 
     /**

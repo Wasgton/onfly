@@ -2,47 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\FailToCreateException;
+use App\Http\Requests\RequestStoreTravelOrder;
 use App\Models\TravelOrder;
+use App\Service\TravelOrderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TravelOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function __construct(private TravelOrderService $service) {}
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @throws FailToCreateException
      */
-    public function store(Request $request)
+    public function store(RequestStoreTravelOrder $request): JsonResponse
     {
-        //
+        $travelOrder = $this->service->store($request->validated());
+        return response()->json([
+            'message' => 'Travel Order created successfully.',
+            'travel_order' => $travelOrder,
+        ], Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(TravelOrder $travelOrder)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TravelOrder $travelOrder)
     {
         //
     }

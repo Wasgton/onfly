@@ -11,8 +11,7 @@ abstract class AbstractRequest extends FormRequest
     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator) : void
     {
         throw new HttpResponseException(response()->json([
-            'errors' => $validator->errors(),
-            'status' => true
+            'errors' => $validator->errors()
         ], 422));
     }
 }
