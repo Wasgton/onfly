@@ -64,8 +64,9 @@ class TravelOrderControllerTest extends TestCase
     public function test_should_show_travel_order_details(): void
     {
         $token = $this->getToken();
-
         $travelData = [
+            'user_id' => auth()->user()->id,
+            'applicant_name' => auth()->user()->name,
             'destination'    => $this->faker->city,
             'departure_date' => Carbon::now()->addDays(5)->format('Y-m-d'),
             'return_date'    => Carbon::now()->addDays(10)->format('Y-m-d'),
@@ -138,7 +139,39 @@ class TravelOrderControllerTest extends TestCase
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonCount(2, 'data');
     }
+    
+    public function test_should_filter_travel_orders_by_create_dates(): void
+    {
+        $token = $this->getToken();
+        $startDate = Carbon::now()->addDays(5)->format('Y-m-d');
+        $endDate = Carbon::now()->addDays(10)->format('Y-m-d');
+        TravelOrder::factory()->create(['created_at' => Carbon::now()->addDays(6)->format('Y-m-d')]);
+        TravelOrder::factory()->create(['created_at' => Carbon::now()->addDays(8)->format('Y-m-d')]);
+        TravelOrder::factory()->create(['created_at' => Carbon::now()->addDays(12)->format('Y-m-d')]);
 
+        $response = $this->getJson(route('api.v1.travel_orders.get-all', [
+            'create_period_start' => $startDate,
+            'create_period_end'   => $endDate,
+        ]), ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(2, 'data');
+    }
+
+    public function test_should_return_travel_orders_by_applicant_name(): void
+    {
+        $token = $this->getToken();
+        $applicantName = $this->faker()->name;
+        TravelOrder::factory()->count(3)->create(['applicant_name' => $applicantName]);
+        TravelOrder::factory()->count(2)->create(['applicant_name' => $this->faker()->name()]);
+
+        $response = $this->getJson(route('api.v1.travel_orders.get-all', ['applicant_name' => $applicantName]),
+            ['Authorization' => 'Bearer ' . $token]);
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(3, 'data');
+    }
+    
     /**
      * @throws FailToCreateException
      */
@@ -210,7 +243,28 @@ class TravelOrderControllerTest extends TestCase
             ->assertJsonFragment(['destination' => $destination])
             ->assertJsonFragment(['status' => TravelOrderStatus::toName($status)]);
     }
+    
+    public function test_should_only_return_travel_orders_belonging_to_logged_in_user(): void
+    {
+        $token = $this->getToken();
+        $user = auth()->user();
 
+        TravelOrder::factory()->count(3)->create(['user_id' => $user->id]);
+
+        $anotherUser = $this->createUser();
+        TravelOrder::factory()->count(2)->create(['user_id' => $anotherUser['user']->id]);
+
+        $response = $this->getJson(route('api.v1.travel_orders.get-all'), [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertJsonCount(3, 'data')
+            ->assertJsonMissing(['user_id' => $anotherUser['user']->id]);
+    }
+
+    
+    
     /**
      * @return mixed
      * @throws FailToCreateException
