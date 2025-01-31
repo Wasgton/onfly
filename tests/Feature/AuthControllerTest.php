@@ -21,7 +21,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-       $response = $this->postJson('/api/v1/register', $userData);
+       $response = $this->postJson(route('api.v1.register'), $userData);
        $response->assertStatus(201);
        $response->assertJsonStructure([
            'message',
@@ -38,7 +38,7 @@ class AuthControllerTest extends TestCase
             'password' => 'passwo',
             'password_confirmation' => 'passw',
         ];
-        $this->postJson('/api/v1/register', $userData)
+        $this->postJson(route('api.v1.register'), $userData)
              ->assertStatus(422)
              ->assertJsonValidationErrors(['password', 'password_confirmation', 'email']);
     }
@@ -51,7 +51,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-        $this->postJson('/api/v1/register', $userData);
+        $this->postJson(route('api.v1.register'), $userData);
 
         $loginData = [
             'email' => $userData['email'],
@@ -74,7 +74,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
-        $this->postJson('/api/v1/register', $userData);
+        $this->postJson(route('api.v1.register'), $userData);
 
         $loginData = [
             'email' => $this->faker->email,
@@ -93,7 +93,7 @@ class AuthControllerTest extends TestCase
             'password'              => 'password123',
             'password_confirmation' => 'password123',
         ];
-        $this->postJson('/api/v1/register', $userData);
+        $this->postJson(route('api.v1.register'), $userData);
         $loginData = [
             'email'    => $userData['email'],
             'password' => 'wrongpassword'
