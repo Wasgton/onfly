@@ -84,5 +84,24 @@ class AuthControllerTest extends TestCase
             ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
             ->assertJsonValidationErrors(['email']);
     }
-    
+
+    public function test_user_cant_login_with_wrong_password(): void
+    {
+        $userData = [
+            'name'                  => $this->faker->name,
+            'email'                 => $this->faker->email,
+            'password'              => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+        $this->postJson('/api/v1/register', $userData);
+        $loginData = [
+            'email'    => $userData['email'],
+            'password' => 'wrongpassword'
+        ];
+        $this->postJson('/api/v1/login', $loginData)
+            ->assertStatus(Response::HTTP_UNAUTHORIZED)
+            ->assertJsonFragment(['message' => 'Invalid credentials.']);
+    }
 }
+
+

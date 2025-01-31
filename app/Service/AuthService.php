@@ -5,13 +5,9 @@ namespace App\Service;
 use App\Exceptions\FailToCreateException;
 use App\Models\User;
 use App\Repository\Contracts\UserRepository;
-use Exception;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\UnauthorizedException;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class AuthService
 {
@@ -33,7 +29,10 @@ class AuthService
 
     public function login(array $credentials): array
     {
-        $user = $this->userRepository->findByEmail($credentials['email']);
+        $user = $this->userRepository->findByEmail($credentials['email']);        
+        if (!Hash::check($credentials['password'], $user->password)) {
+            throw new UnauthorizedException("Invalid credentials.", Response::HTTP_UNAUTHORIZED);
+        }
         if (!$token = auth()->login($user)) {
             throw new UnauthorizedException("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
