@@ -41,6 +41,7 @@ class TravelOrder extends Model
         static::creating(static function ($model) {
             $model->status = TravelOrderStatus::REQUESTED;
         });
+        static::addGlobalScope(static fn ($query) => $query->where('user_id', auth()->user()->id));
     }
 
     public function getState(): TravelOrderState
