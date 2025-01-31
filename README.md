@@ -22,22 +22,20 @@ Certifique-se de ter as dependências abaixo instaladas:
 ```shell script
 docker compose up -d
 ```
-### Variáveis de ambiente:
-- Configure o arquivo `.env` com os valores corretos de banco de dados.
 
-```
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=travel
-DB_USERNAME=root
-DB_PASSWORD=
-``` 
+###
 
-8. Execute as migrações do banco de dados:
+- Entre no container usando o comando
 ```shell script
-php artisan migrate
+docker compose exec app bash
 ```
+- Para facilitar a execução eu criei um comando composer para fazer a instalação das dependencias, copiar o .env e executar as migrations
+
+```shell script
+composer run install
+```
+######  _Apenas por se tratar de um teste e para facilitar a execução deixei o .env.exemple configurado com a configuração de banco conforme o docker-compose .yml._
+
 
 ---
 
