@@ -17,6 +17,7 @@ class TravelOrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'applicant' => $this->applicant_name,
             'destination' => $this->destination,
             'departure_date' => $this->departure_date->format('Y-m-d H:i:s'),
