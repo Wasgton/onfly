@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y git \
                                          libicu-dev \
                                          libbz2-dev \
                                          libpng-dev \
+                                         libonig-dev \
                                          libjpeg-dev \
                                          libmcrypt-dev \
                                          libreadline-dev \
@@ -27,7 +28,7 @@ COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN docker-php-ext-install pdo pdo_mysql exif
+RUN docker-php-ext-install pdo pdo_mysql exif mbstring
 
 USER $user
 EXPOSE 9000
