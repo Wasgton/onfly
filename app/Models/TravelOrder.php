@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\TravelOrderStatus;
+use App\Events\StatusChangeEvent;
 use App\States\ApprovedState;
 use App\States\CancelledState;
 use App\States\RequestedState;
@@ -40,6 +41,10 @@ class TravelOrder extends Model
     {
         static::creating(static function ($model) {
             $model->status = TravelOrderStatus::REQUESTED;
+        });
+        static::updated(static function (Model $model) {
+            $model->wasChanged('status');
+            StatusChangeEvent::dispatch($model);
         });
         static::addGlobalScope(static fn ($query) => $query->where('user_id', auth()->user()->id));
     }

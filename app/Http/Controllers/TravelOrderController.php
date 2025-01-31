@@ -11,6 +11,7 @@ use App\Service\TravelOrderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
 
 class TravelOrderController extends Controller
 {
@@ -50,6 +51,7 @@ class TravelOrderController extends Controller
     public function approve(TravelOrder $travelOrder): JsonResponse
     {
         $this->service->approve($travelOrder);
+        Event::dispatch('approve', $travelOrder);
         return response()->json([
             'message' => 'Travel Order approved successfully.',
         ]);

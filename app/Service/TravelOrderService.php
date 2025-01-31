@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Enum\TravelOrderStatus;
+use App\Events\StatusChangeEvent;
 use App\Exceptions\FailToCreateException;
 use App\Models\TravelOrder;
 use App\Repository\Contracts\TravelOrderRepository;
@@ -35,6 +36,7 @@ class TravelOrderService
     {
         $travelOrder->setState(TravelOrderStatus::APPROVED);
         $travelOrder->save();
+        StatusChangeEvent::dispatch($travelOrder);
     }
     
     public function cancel(TravelOrder $travelOrder) : void
