@@ -263,6 +263,37 @@ class TravelOrderControllerTest extends TestCase
             ->assertJsonMissing(['user_id' => $anotherUser['user']->id]);
     }
 
+    public function test_should_approve_travel_order_successfully(): void
+    {
+        $token = $this->getToken();
+        $travelOrder = TravelOrder::factory()->create();
+        $response = $this->putJson(route('api.v1.travel_orders.approve', ['travelOrder' => $travelOrder->id]), [], [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson(['message' => 'Travel Order approved successfully.']);
+        $this->assertDatabaseHas('travel_orders', [
+            'id'     => $travelOrder->id,
+            'status' => TravelOrderStatus::APPROVED->value
+        ]);
+    }
+    
+    public function test_should_cancel_travel_order_successfully(): void
+    {
+        $token = $this->getToken();
+        $travelOrder = TravelOrder::factory()->create();
+        $response = $this->putJson(route('api.v1.travel_orders.cancel', ['travelOrder' => $travelOrder->id]), [], [
+            'Authorization' => 'Bearer ' . $token
+        ]);
+        $response->assertStatus(Response::HTTP_OK)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson(['message' => 'Travel Order cancelled successfully.']);
+        $this->assertDatabaseHas('travel_orders', [
+            'id'     => $travelOrder->id,
+            'status' => TravelOrderStatus::CANCELLED->value
+        ]);
+    }
     
     
     /**

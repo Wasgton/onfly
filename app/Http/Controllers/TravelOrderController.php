@@ -9,7 +9,6 @@ use App\Http\Resources\TravelOrderResource;
 use App\Models\TravelOrder;
 use App\Service\TravelOrderService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -48,16 +47,21 @@ class TravelOrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TravelOrder $travelOrder)
+    public function approve(TravelOrder $travelOrder): JsonResponse
     {
-        
+        $this->service->approve($travelOrder);
+        return response()->json([
+            'message' => 'Travel Order approved successfully.',
+        ]);
     }
-
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
      */
-    public function destroy(TravelOrder $travelOrder)
+    public function cancel(TravelOrder $travelOrder): JsonResponse
     {
-        //
+        $this->service->cancel($travelOrder);
+        return response()->json([
+            'message' => 'Travel Order cancelled successfully.',
+        ]);
     }
 }

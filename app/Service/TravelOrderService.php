@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Enum\TravelOrderStatus;
 use App\Exceptions\FailToCreateException;
 use App\Models\TravelOrder;
 use App\Repository\Contracts\TravelOrderRepository;
@@ -29,5 +30,17 @@ class TravelOrderService
        $limit = isset($filters['per_page']) ? min($filters['per_page'], 100) : 15;
        return $this->repository->getPaginated($filters, $limit);
     }
+
+    public function approve(TravelOrder $travelOrder) : void
+    {
+        $travelOrder->setState(TravelOrderStatus::APPROVED);
+        $travelOrder->save();
+    }
     
+    public function cancel(TravelOrder $travelOrder) : void
+    {
+        $travelOrder->setState(TravelOrderStatus::CANCELLED);
+        $travelOrder->save();
+    }
+
 }
