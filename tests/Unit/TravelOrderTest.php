@@ -105,4 +105,20 @@ class TravelOrderTest extends TestCase
         $travelOrder->setState(TravelOrderStatus::CANCELLED);
     }
     
+    public function test_status_approved_cannot_transition_to_status_other_than_cancelled(): void
+    {
+        $user = $this->createUser()['user'];
+        $this->actingAs($user);
+        $travelOrder = TravelOrder::factory()->create([
+            'departure_date' => Carbon::now()->addDays(1)->format('Y-m-d'),
+            'user_id' => auth()->id(),
+            'applicant_name' => auth()->user()->name,
+        ]);
+        $travelOrder->setState(TravelOrderStatus::APPROVED);
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Approved order can only be change to cancelled');
+        $travelOrder->setState(TravelOrderStatus::REQUESTED);
+    }
+
+    
 }
