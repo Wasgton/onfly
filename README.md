@@ -25,9 +25,9 @@ docker compose up -d
 
 ###
 
-- Entre no container usando o comando
+- Entre no container do php usando o comando
 ```shell script
-docker compose exec app bash
+docker compose exec php bash
 ```
 - Para facilitar a execução eu criei um comando composer para fazer a instalação das dependencias, copiar o .env e executar as migrations
 
@@ -64,7 +64,7 @@ php artisan test --coverage
 > De ambas as formas serão executados todos os testes da aplicação. É necessário estar com banco de dados configurado.
 
 ### Endpoints
-Caso queira executar testes manuais utilize os endpoints abaixo a partir da URL base http://localhost
+Caso queira executar testes manuais utilize os endpoints abaixo a partir da URL base http://localhost:8000
 
 - POST .................. api/v1/login 
 - POST .................. api/v1/register

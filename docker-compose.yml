@@ -33,11 +33,8 @@ services:
      build: ./docker/mysql/.
      container_name: mysql_travel_order
      environment:
-       - 
        - MYSQL_ROOT_PASSWORD=travel
        - MYSQL_DATABASE=travel
-       - MYSQL_PASSWORD=travel
-       - MYSQL_USER=travel_user
      networks:
        - php_net
      ports:
