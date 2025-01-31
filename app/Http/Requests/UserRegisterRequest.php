@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Validator;
-
 class UserRegisterRequest extends AbstractRequest
 {
     /**

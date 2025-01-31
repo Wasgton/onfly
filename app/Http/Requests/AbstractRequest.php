@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Validation\Validator;
 
 abstract class AbstractRequest extends FormRequest
@@ -12,6 +13,6 @@ abstract class AbstractRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'errors' => $validator->errors()
-        ], 422));
+        ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
